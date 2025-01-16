@@ -134,14 +134,9 @@ package body Interrupts is
 
    procedure Init is
    begin
-      -- clear mstatus, set previous privilege level to machine-mode
       RISCV.CSR.Mstatus.Set_Bits (2#11000_00000000#);
-
-      -- configure trap handler base address
       RISCV.CSR.Mtvec.Write (UInt32 (To_Integer (trap_entry'Address)));
-
       RISCV.CSR.Mie.Write (0);
-
       asm ("fence");
    end Init;
 

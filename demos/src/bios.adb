@@ -8,7 +8,6 @@ with Hooks;
 
 procedure Bios is
 begin
-   
    Interrupts.Init;
    Interrupts.Install_Uart0_Rx_Interrupt_Handler (Hooks.Parse_Cmd'Access);
 
