@@ -1,0 +1,19 @@
+name = "neorv32"
+description = ""
+version = "0.1.0-dev"
+
+authors = ["Olivier Henley"]
+maintainers = ["Olivier Henley <olivier.henley@gmail.com>"]
+maintainers-logins = ["ohenley"]
+licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = []
+
+[[depends-on]]
+gnat_riscv64_elf = "*"
+bare_runtime = "*"
+hal = "*"
+
+
+[gpr-set-externals]
+BARE_RUNTIME_SWITCHES = "-march=rv32i_zicsr_zifencei -mabi=ilp32"
