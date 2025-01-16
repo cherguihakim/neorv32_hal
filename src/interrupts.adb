@@ -102,7 +102,7 @@ package body Interrupts is
       (Shift_Right(RISCV.CSR.MCAUSE.Read, 31) = 0 and 
        Trap_Code_T'Enum_Val (RISCV.CSR.MCAUSE.Read) /= Instruction_Access);
 
-   procedure Computer_Return_Address is
+   procedure Compute_Return_Address is
       Epc : UInt32 := RISCV.CSR.MEPC.Read + 4;
       ISA : UInt32 := RISCV.CSR.MISA.Read;
    begin
@@ -116,7 +116,7 @@ package body Interrupts is
          end;
       end if;
       RISCV.CSR.MEPC.Write (Epc);
-   end;
+   end Compute_Return_Address;
 
    procedure Isr with
      Export, Convention => C, External_Name => "isr";
@@ -125,7 +125,7 @@ package body Interrupts is
    begin
       Call_Handler;
       if Is_Exception then
-         Computer_Return_Address;
+         Compute_Return_Address;
       end if;
    end Isr;
 
