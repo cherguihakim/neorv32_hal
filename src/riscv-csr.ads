@@ -35,9 +35,6 @@ with RISCV.CSR_Generic; use RISCV.CSR_Generic;
 
 package RISCV.CSR is
 
-   -- package IRQ_Mask is new CSR_RW_Pck ("0xBC0", Unsigned_XLEN);
-   -- package IRQ_PENDING is new CSR_RW_Pck ("0xFC0", Unsigned_XLEN);
-
    -- Machine Information --
    package Mvendorid is new CSR_RO_Pck ("mvendorid", Unsigned_XLEN);
    package Marchid   is new CSR_RO_Pck ("marchid", Unsigned_XLEN);

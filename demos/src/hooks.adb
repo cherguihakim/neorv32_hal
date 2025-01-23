@@ -69,9 +69,10 @@ package body Hooks is
    procedure Show_Unknown_Command is
    begin
       New_Line;
-      Put_Line ("Unknown command!");
+      Put_Line ("Unknown command! 'h' for help.");
       Show_Choice_Prompt;
    end Show_Unknown_Command;
+
 
    procedure Parse_Cmd is
       use Neorv32;

@@ -129,7 +129,7 @@ package body Interrupts is
       end if;
    end Isr;
 
-   procedure trap_entry
+   procedure Trap_Entry
    with Import, Convention => C, External_Name => "trap_entry";
 
    procedure Init is
@@ -139,5 +139,10 @@ package body Interrupts is
       RISCV.CSR.Mie.Write (0);
       asm ("fence");
    end Init;
+
+   procedure Global_Machine_Interrupt_Enable is
+   begin
+      Mstatus.Set_Bits (2#1000#);
+   end Global_Machine_Interrupt_Enable;
 
 end Interrupts;

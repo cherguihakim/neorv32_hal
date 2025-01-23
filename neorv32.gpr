@@ -2,7 +2,7 @@ with "config/neorv32_config.gpr";
 with "bare_runtime.gpr";
 project Neorv32 is
 
-   for Languages use ("Ada", "ASM_CPP", "C");
+   for Languages use ("Ada", "ASM_CPP");
 
    for Target use "riscv64-elf";
    for Runtime ("Ada") use Bare_Runtime'Runtime ("Ada");
@@ -15,8 +15,6 @@ project Neorv32 is
                         "src/svd",
                         "src/periph",
                         "src/boards/ulx3s",
-                        --"src/rte/include",
-                        --"src/rte/source",
                         "config/");
    for Object_Dir use "obj/" & Neorv32_Config.Build_Profile;
    for Create_Missing_Dirs use "True";
