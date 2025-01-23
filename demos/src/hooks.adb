@@ -12,26 +12,28 @@ package body Hooks is
    type Cmd_T is (Echo, Infos, Reload, Help, Unknown);
    Cmd : Cmd_T := Unknown;
 
-   Yellow  : constant String := ASCII.ESC & "[1;38;2;255;200;0m";
-   Magenta : constant String := ASCII.ESC & "[1;38;2;255;0;255m";
+   Pink_Bold : constant String := ASCII.ESC & "[1;38;2;255;0;255m";
+   Cyan      : constant String := ASCII.ESC & "[38;2;0;255;255m";
+   Blue      : constant String := ASCII.ESC & "[38;2;85;170;255m";
+   Purple    : constant String := ASCII.ESC & "[38;2;170;85;255m";
+   Pink      : constant String := ASCII.ESC & "[38;2;255;0;255m";
+   Green     : constant String := ASCII.ESC & "[38;2;57;255;20m";
+
    Reset   : constant String := ASCII.ESC & "[0m";
 
-   procedure Show_GAP_Logo is
+   procedure Neorv32_Ada_Art is
    begin
-      Put_Line (Yellow & "      _____   _____   _____  "        );
-      Put_Line (         "     /  ___\ _\__  \ /  _  \ "        );
-      Put_Line (         "    /  /_   /  _   //  /   / "        );
-      Put_Line (         "   /  /  \ /   /  //  /   /  "        );
-      Put_Line (         "  /  /_  //   /  //  ____/   "        );
-      Put_Line (         " /      //   /  //  /        "        );
-      Put_Line (         " \_____/ \_____/ \_/         "        );
-      Put_Line (         "                             " & Reset);
-      Put_Line (         "   Solidify your firmware!   ");
-   end Show_GAP_Logo;
+      Put_Line (Cyan   & " _______                          ______ ______ " & Reset);
+      Put_Line (Blue   & "|    |  |.-----.-----.----.--.--.|__    |__    |" & Reset);
+      Put_Line (Purple & "|       ||  -__|  _  |   _|  |  ||__    |  " & Reset & Green & " ___" & Reset & Purple & "|" & Reset & Green & "_   _     ");
+      Put_Line (Pink   & "|__|____||_____|_____|__|  \___/ |______|__" & Reset & Green & "|  _  |_| |___ ");
+      Put_Line (         "                                           " & Reset & Green & "|     | . | .'|");
+      Put_Line (         "                                           " & Reset & Green & "|__|__|___|__,|" & Reset);
+   end Neorv32_Ada_Art;
 
    procedure Show_Choice_Prompt is
    begin
-      Put (Magenta & "Enter your choice >" & Reset);
+      Put (Pink & "Enter your choice >" & Reset);
    end Show_Choice_Prompt;
 
    procedure Show_Menu is
@@ -49,13 +51,13 @@ package body Hooks is
    procedure Show_Input_Prompt is
    begin
       New_Line;
-      Put (Magenta & ">" & Reset);
+      Put (Pink & ">" & Reset);
    end Show_Input_Prompt;
 
    procedure Show_ReLoad is
    begin
       New_Line;
-      Show_GAP_Logo;
+      Neorv32_Ada_Art;
       Show_Menu;
    end Show_ReLoad;
 
@@ -74,7 +76,9 @@ package body Hooks is
    end Show_Unknown_Command;
 
 
-   procedure Parse_Cmd is
+   procedure Parse_Cmd (Hart : Harts_T; Trap_Code : Trap_Code_T) is
+      pragma Unreferenced (Hart);
+      pragma Unreferenced (Trap_Code);
       use Neorv32;
       Choice : Character;
       Command : Cmd_T := Unknown;
