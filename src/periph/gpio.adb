@@ -6,7 +6,9 @@ package body GPIO is
 
    procedure Init is
    begin
-      -- Pour un GPIO memory-mapped, aucune initialisation n'est nécessaire.
+   -- Initialisation des registres de sortie
+      GPIO_Periph.OUTPUT0 := 0;
+      GPIO_Periph.OUTPUT1 := 0;
       null;
    end Init;
 
