@@ -1,15 +1,21 @@
 with Ada.Text_IO; use Ada.Text_IO;
+--with Ada.Integer_Text_IO; 
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 
 with Neorv32.Uart0;
+with Neorv32.GPIO;
 with Neorv32;
 with Uart0;
+with GPIO; 
+with Random;
+with timer;
+with Shooter_Game;
 
 with Sysinfo;
 
 package body Hooks is
 
-   type Cmd_T is (Echo, Infos, Reload, Help, Unknown);
+   type Cmd_T is (Echo, Infos, Reload, Help, Leds, Button, Number, Wait, Game, Unknown);
    Cmd : Cmd_T := Unknown;
 
    Pink_Bold : constant String := ASCII.ESC & "[1;38;2;255;0;255m";
@@ -43,6 +49,11 @@ package body Hooks is
       Put_Line (" e: Echo your input");
       Put_Line (" i: System Infos.");
       Put_Line (" h: Help on commands.");
+      Put_Line (" l: Turn ON LEDs if 1 else OFF");
+      Put_Line (" b: Wait for button press.");
+      Put_Line (" n: Random Number.");
+      Put_Line (" w: Wait for 5 seconds.");
+      Put_Line (" g: Play the retro-shooter game.");
       Put_Line (" r: Reload the program.");
       Put_Line ("======================================");
       Show_Choice_Prompt;
@@ -75,6 +86,46 @@ package body Hooks is
       Show_Choice_Prompt;
    end Show_Unknown_Command;
 
+   procedure Show_Button (Pin : Natural) is
+   begin
+      while GPIO.Read_Pin (Pin) = False loop
+         --New_Line;
+         null;
+         --Ada.Integer_Text_IO.Put(Item => Neorv32.GPIO.GPIO_Periph.INPUT0, Base => 2);
+         --New_Line;
+      end loop;
+      New_Line;
+      Put_Line("Button pressed");
+      New_Line;
+      Put_Line("GPIO Input Register is : " & Neorv32.GPIO.GPIO_Periph.INPUT0'Image);
+      --  Put_Line("Output register is " & Neorv32.GPIO.GPIO_Periph.OUTPUT0'Image);
+      --  Neorv32.GPIO.GPIO_Periph.OUTPUT0 := 2#00000000000000000000000000010001#;
+      --  Neorv32.GPIO.GPIO_Periph.OUTPUT0 := 55;
+      --  Put_Line("Output register is now " & Neorv32.GPIO.GPIO_Periph.OUTPUT0'Image);
+      --Ada.Integer_Text_IO.Put(Item => Neorv32.GPIO.GPIO_Periph.INPUT0, Base => 2);
+      New_Line;
+      Show_Choice_Prompt;
+   end Show_Button;
+
+   procedure Show_Random_number is
+   begin
+      Put_Line ("Random number: " & Random.Random'Image);
+      Show_Choice_Prompt;
+   end Show_Random_number;
+
+   procedure Show_Timer is 
+   begin
+      Timer.Init;
+      Timer.Wait(10);
+      Put_Line ("Timer expired");
+      Show_Choice_Prompt;
+   end Show_Timer;
+
+   procedure Show_Game is  
+   begin 
+      Shooter_Game.Game;
+      Show_Choice_Prompt;
+   end Show_Game;
 
    procedure Parse_Cmd (Hart : Harts_T; Trap_Code : Trap_Code_T) is
       pragma Unreferenced (Hart);
@@ -112,6 +163,17 @@ package body Hooks is
                      Show_Reload;
                   when Help =>
                      Show_Menu;
+                  when Button =>
+                     Show_Button (1);
+                  when Number =>
+                     New_Line;
+                     Show_Random_number;
+                  when Wait =>
+                     New_Line;
+                     Show_Timer;
+                  when Game =>
+                     New_Line;
+                     Show_Game;
                   when others =>
                      Show_Unknown_Command;
                end case;

@@ -31,7 +31,7 @@ ENTRY(_start);
 
 MEMORY
 {
-  rom (rx) : ORIGIN = 0x0, LENGTH = 0x8000
+  rom (rx) : ORIGIN = 0x0, LENGTH = 0xA000
   ram (rwx) : ORIGIN = 0x80000000, LENGTH = 0x4000
 }
 

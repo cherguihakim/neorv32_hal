@@ -9,6 +9,8 @@ package body GPIO is
    -- Initialisation des registres de sortie
       GPIO_Periph.OUTPUT0 := 0;
       GPIO_Periph.OUTPUT1 := 0;
+      GPIO_Periph.INPUT0 := 2#00000000000000000000000000000000#;
+      GPIO_Periph.INPUT1 := 2#00000000000000000000000000000000#;
       null;
    end Init;
 
