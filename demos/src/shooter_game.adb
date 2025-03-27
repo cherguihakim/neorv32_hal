@@ -107,13 +107,13 @@ package body Shooter_Game is
 
    function Read_Command return Command is
    begin
-      if GPIO.Read_Pin (Left) then
+      if GPIO.Read_Pin (Command'Enum_Rep (Left)) then
          return Left;
-      elsif GPIO.Read_Pin (Shoot) then
+      elsif GPIO.Read_Pin (Command'Enum_Rep (Shoot)) then
          return Shoot;
-      elsif GPIO.Read_Pin (Right) then
+      elsif GPIO.Read_Pin (Command'Enum_Rep (Right)) then
          return Right;
-      elsif GPIO.Read_Pin (Quit) then
+      elsif GPIO.Read_Pin (Command'Enum_Rep (Quit)) then
          return Quit;
       else
          return None;
