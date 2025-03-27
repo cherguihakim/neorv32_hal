@@ -16,9 +16,9 @@ package body Shooter_Game is
    Score            : Integer := 0;                -- Score du joueur
 
    type Projectile is record
-      X : Integer;
-      Y : Integer;
-      Active : Boolean;
+      X : Integer := 0;
+      Y : Integer := 0;
+      Active : Boolean := False;
    end record;
 
    type Enemy is record
@@ -27,8 +27,7 @@ package body Shooter_Game is
       Active : Boolean;
    end record;
 
-   Projectiles : array (1 .. Max_Projectiles) of Projectile :=
-      (others => (X => 0, Y => 0, Active => False));
+   Projectiles : array (1 .. Max_Projectiles) of Projectile;
 
    Enemies : array (1 .. Max_Enemies) of Enemy :=
       (others => (X => 0, Y => 0, Active => False));
@@ -102,6 +101,24 @@ package body Shooter_Game is
       end loop;
       New_Line;
    end Draw_Screen;
+
+   type Command is (Left, Shoot, Right, Quit, None);
+   for Command use (Left => 0, Shoot => 1, Right => 2, Quit => 3, None => 4);
+
+   function Read_Command return Command is
+   begin
+      if GPIO.Read_Pin (Left) then
+         return Left;
+      elsif GPIO.Read_Pin (Shoot) then
+         return Shoot;
+      elsif GPIO.Read_Pin (Right) then
+         return Right;
+      elsif GPIO.Read_Pin (Quit) then
+         return Quit;
+      else
+         return None;
+      end if;
+   end;
 
    procedure Read_Input is
       Droite           : constant Integer := 2; -- Pin pour la direction droite
@@ -192,16 +209,19 @@ package body Shooter_Game is
    end Check_Collisions;
 
    procedure Game is
+      Cmd : Command;
    begin
       loop
-         exit when not Running; -- Quitter la boucle si Running = False
-         Spawn_Enemies;  -- Spawner de nouveaux ennemis
-         Draw_Screen;
-         Update_Projectiles;
-         Update_Enemies;
-         Check_Collisions;
+         --  exit when not Running; -- Quitter la boucle si Running = False
+         --  Spawn_Enemies;  -- Spawner de nouveaux ennemis
+         --  Draw_Screen;
+         --  Update_Projectiles;
+         --  Update_Enemies;
+         --  Check_Collisions;
          Timer.Wait (1);
-         Read_Input;
+         Cmd := Read_Command;
+         Put (Cmd'Image);
+         -- Read_Input;
       end loop;
 
       Put_Line("Oops, vous avez perdu !!");

@@ -5,6 +5,7 @@ package GPIO is
    procedure Init;
 
    -- Manipulation d'une broche individuelle
+
    procedure Set_Pin (Pin : Natural);
    function Read_Pin (Pin : Natural) return Boolean;
    function shl (Value  : UInt32; Amount : Natural) return UInt32;
