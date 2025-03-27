@@ -209,18 +209,18 @@ package body Shooter_Game is
    end Check_Collisions;
 
    procedure Game is
-      Cmd : Command;
+      Cmd : Command := None;
    begin
       loop
-         --  exit when not Running; -- Quitter la boucle si Running = False
-         --  Spawn_Enemies;  -- Spawner de nouveaux ennemis
-         --  Draw_Screen;
-         --  Update_Projectiles;
-         --  Update_Enemies;
-         --  Check_Collisions;
-         Timer.Wait (1);
+         exit when not Running; -- Quitter la boucle si Running = False
+         Spawn_Enemies;  -- Spawner de nouveaux ennemis
+         Draw_Screen;
+         Update_Projectiles;
+         Update_Enemies;
+         Check_Collisions;
+         -- Timer.Wait (500);
          Cmd := Read_Command;
-         Put (Cmd'Image);
+         Put_Line (Cmd'Image);
          -- Read_Input;
       end loop;
 
