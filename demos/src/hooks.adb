@@ -116,7 +116,7 @@ package body Hooks is
    procedure Show_Timer is 
    begin
       Timer.Init;
-      Timer.Wait(10);
+      Timer.Wait(5000);
       Put_Line ("Timer expired");
       Show_Choice_Prompt;
    end Show_Timer;

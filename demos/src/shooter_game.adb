@@ -232,6 +232,7 @@ package body Shooter_Game is
       Put(" Votre Score: ");
       Put(Integer'Image(Score));
       New_Line;
+      Running := True;
    end Game;
 
 end Shooter_Game;
