@@ -7,11 +7,10 @@ package body GPIO is
    procedure Init is
    begin
    -- Initialisation des registres de sortie
-      GPIO_Periph.OUTPUT0 := 0;
-      GPIO_Periph.OUTPUT1 := 0;
+      GPIO_Periph.OUTPUT0 := 16#00000000#;
+      GPIO_Periph.OUTPUT1 := 16#00000000#;
       GPIO_Periph.INPUT0 := 2#00000000000000000000000000000000#;
       GPIO_Periph.INPUT1 := 2#00000000000000000000000000000000#;
-      null;
    end Init;
 
    function shl (Value  : UInt32; Amount : Natural) return UInt32 is
