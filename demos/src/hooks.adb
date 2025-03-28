@@ -12,6 +12,7 @@ with timer;
 with Shooter_Game;
 
 with Sysinfo;
+with System;
 
 package body Hooks is
 
@@ -98,11 +99,6 @@ package body Hooks is
       Put_Line("Button pressed");
       New_Line;
       Put_Line("GPIO Input Register is : " & Neorv32.GPIO.GPIO_Periph.INPUT0'Image);
-      --  Put_Line("Output register is " & Neorv32.GPIO.GPIO_Periph.OUTPUT0'Image);
-      --  Neorv32.GPIO.GPIO_Periph.OUTPUT0 := 2#00000000000000000000000000010001#;
-      --  Neorv32.GPIO.GPIO_Periph.OUTPUT0 := 55;
-      --  Put_Line("Output register is now " & Neorv32.GPIO.GPIO_Periph.OUTPUT0'Image);
-      --Ada.Integer_Text_IO.Put(Item => Neorv32.GPIO.GPIO_Periph.INPUT0, Base => 2);
       New_Line;
       Show_Choice_Prompt;
    end Show_Button;
@@ -120,6 +116,18 @@ package body Hooks is
       Put_Line ("Timer expired");
       Show_Choice_Prompt;
    end Show_Timer;
+
+   procedure Show_Leds is 
+   begin
+      Put_Line("Before setting to 1 : " & GPIO.Get_Output0'Image);
+      GPIO.Set_Pin(1);
+      Put_Line("After setting to 1 : " & GPIO.Get_Output0'Image);
+      Neorv32.GPIO.GPIO_Periph.OUTPUT0 := 16#FFFFFFFF#;
+      Put_Line("OUTPUT0 after full set: " & Neorv32.GPIO.GPIO_Periph.OUTPUT0'Image);
+      Put_Line("Adress of OUPUT0 is : " & System.Address'Image(Neorv32.GPIO_Base));
+
+      Show_Choice_Prompt;
+   end Show_Leds;
 
    procedure Show_Game is  
    begin 
@@ -171,6 +179,9 @@ package body Hooks is
                   when Wait =>
                      New_Line;
                      Show_Timer;
+                  when Leds =>
+                     New_Line;
+                     Show_Leds;
                   when Game =>
                      New_Line;
                      Show_Game;

@@ -33,8 +33,8 @@ package neorv32.GPIO is
 
    for GPIO_Peripheral use record
       INPUT0  at 16#0# range 0 .. 31;
-      INPUT1  at 16#4# range 0 .. 31;
-      OUTPUT0 at 16#8# range 0 .. 31;
+      OUTPUT0 at 16#4# range 0 .. 31;
+      INPUT1  at 16#8# range 0 .. 31;
       OUTPUT1 at 16#C# range 0 .. 31;
    end record;
 
