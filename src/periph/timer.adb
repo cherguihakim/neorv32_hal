@@ -35,8 +35,7 @@ package body Timer is
    procedure Wait(ms : UInt32) is
       clk_freq : constant Uint32 := Uint32(Sysinfo.Clk);
       prescaler : constant UInt3 := 4;
-      threshold  : UInt32 := (clk_freq / (2**(Integer(Prescaler) + 1))) * ms / 1000;
-      thres : UInt32 := 10;
+      threshold  : UInt32 := (clk_freq / (2**(Integer(Prescaler)))) * ms / 1000;
    begin
       GPTMR_Periph.CTRL.GPTMR_CTRL_PRSC := prescaler;
       GPTMR_Periph.THRES := threshold;
