@@ -39,9 +39,8 @@ package body Shooter_Game is
    function randomN return Integer is
       num : Integer;
    begin
-      Random.Init;
       num := Integer(Random.Random);
-      num := num mod Screen_Width + 1;
+      num := num mod Screen_Width;
       return num;
    end randomN;
 
@@ -125,25 +124,31 @@ package body Shooter_Game is
       Gauche           : constant Integer := 0; -- Pin pour la direction gauche
       Espace           : constant Integer := 1; -- Pin pour le tir
       Quitter          : constant Integer := 3; -- Pin pour quitter le jeu
+      State            : Boolean := False;      -- Variable pour stocker l'état du bouton
    begin
-
-      if GPIO.Read_Pin(Gauche) = True and then Ship_Pos > 1 then
-         Ship_Pos := Ship_Pos - 1;
-      elsif GPIO.Read_Pin(Droite) = True and then Ship_Pos < Screen_Width then
-         Ship_Pos := Ship_Pos + 1;
-      elsif GPIO.Read_Pin(ESpace) = True then
-         -- Ajouter un tir
-         for P of Projectiles loop
-            if not P.Active then
-               P.X := Ship_Pos;
-               P.Y := 2; -- Juste au-dessus du vaisseau
-               P.Active := True;
-               exit;
-            end if;
-         end loop;
-      elsif GPIO.Read_Pin(Quitter) = True then
-         Running := False; -- Quitter le jeu
-      end if;
+      while not State loop
+         if GPIO.Read_Pin(Gauche) = True and then Ship_Pos > 1 then
+            Ship_Pos := Ship_Pos - 1;
+            State := True;
+         elsif GPIO.Read_Pin(Droite) = True and then Ship_Pos < Screen_Width then
+            Ship_Pos := Ship_Pos + 1;
+            State := True;
+         elsif GPIO.Read_Pin(ESpace) = True then
+            -- Ajouter un tir
+            for P of Projectiles loop
+               if not P.Active then
+                  P.X := Ship_Pos;
+                  P.Y := 2; -- Juste au-dessus du vaisseau
+                  P.Active := True;
+                  exit;
+               end if;
+            State := True; 
+            end loop;
+         elsif GPIO.Read_Pin(Quitter) = True then
+            Running := False; -- Quitter le jeu
+            State := True;
+         end if;
+      end loop;
    exception
       when others => null;
    end Read_Input;
@@ -218,10 +223,9 @@ package body Shooter_Game is
          Update_Projectiles;
          Update_Enemies;
          Check_Collisions;
-         -- Timer.Wait (500);
-         Cmd := Read_Command;
-         Put_Line (Cmd'Image);
-         -- Read_Input;
+         Timer.Init;
+         Timer.Wait (10);
+         Read_Input;
       end loop;
 
       Put_Line("Oops, vous avez perdu !!");
