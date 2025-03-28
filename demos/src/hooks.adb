@@ -50,7 +50,7 @@ package body Hooks is
       Put_Line (" e: Echo your input");
       Put_Line (" i: System Infos.");
       Put_Line (" h: Help on commands.");
-      Put_Line (" l: Turn ON LEDs if 1 else OFF");
+      Put_Line (" l: Turn ON LEDs and OFF after 5 seconds.");
       Put_Line (" b: Wait for button press.");
       Put_Line (" n: Random Number.");
       Put_Line (" w: Wait for 5 seconds.");
@@ -119,13 +119,10 @@ package body Hooks is
 
    procedure Show_Leds is 
    begin
-      Put_Line("Before setting to 1 : " & GPIO.Get_Output0'Image);
-      GPIO.Set_Pin(1);
-      Put_Line("After setting to 1 : " & GPIO.Get_Output0'Image);
-      Neorv32.GPIO.GPIO_Periph.OUTPUT0 := 16#FFFFFFFF#;
-      Put_Line("OUTPUT0 after full set: " & Neorv32.GPIO.GPIO_Periph.OUTPUT0'Image);
-      Put_Line("Adress of OUPUT0 is : " & System.Address'Image(Neorv32.GPIO_Base));
-
+      GPIO.Set_Pin(1, GPIO.HIGH);
+      Timer.Init;
+      Timer.Wait(4000);
+      GPIO.Set_Pin(1, GPIO.LOW);
       Show_Choice_Prompt;
    end Show_Leds;
 

@@ -1,6 +1,7 @@
 with Neorv32.GPIO; use Neorv32.GPIO;
 with System;
 with Interfaces;   use Interfaces;
+with GPIO;         use GPIO;
 
 package body GPIO is
 
@@ -18,15 +19,27 @@ package body GPIO is
       return Value * (2 ** Amount);  -- Décale à gauche en multipliant par 2^Amount
    end shl;
 
-
-   procedure Set_Pin (Pin : Natural) is
+   procedure Set_Pin (Pin : Natural; Value : Pin_Value) is
    begin
       if Pin < 32 then
-         GPIO_Periph.OUTPUT0 := GPIO_Periph.OUTPUT0 or (shl(1, Pin));
+         if Value = HIGH then
+            -- Mettre le pin à high
+            GPIO_Periph.OUTPUT0  := GPIO_Periph.OUTPUT0  or (shl(1, Pin));
+         else
+            -- Mettre le pin à low
+            GPIO_Periph.OUTPUT0  := GPIO_Periph.OUTPUT0  and not(shl(1, Pin));
+         end if;
       else
-         GPIO_Periph.OUTPUT1 := GPIO_Periph.OUTPUT1 or (shl(1, Pin - 32));
+         if Value = HIGH then
+            -- Mettre le pin à high
+            GPIO_Periph.OUTPUT0  := GPIO_Periph.OUTPUT0  or (shl(1, Pin - 32));
+         else
+            -- Mettre le pin à low
+            GPIO_Periph.OUTPUT0  := GPIO_Periph.OUTPUT0  and not(shl(1, Pin - 32));
+         end if;
       end if;
    end Set_Pin;
+
 
    function Read_Pin (Pin : Natural) return Boolean is
       Value : UInt32;
