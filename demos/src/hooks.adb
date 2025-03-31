@@ -118,11 +118,28 @@ package body Hooks is
    end Show_Timer;
 
    procedure Show_Leds is 
+      state : Boolean := True;
    begin
-      GPIO.Set_Pin(1, GPIO.HIGH);
-      Timer.Init;
-      Timer.Wait(4000);
-      GPIO.Set_Pin(1, GPIO.LOW);
+   while (state) loop
+         if GPIO.Read_Pin (0) then 
+            GPIO.Set_Pin (8, GPIO.HIGH);
+            Timer.Init;
+            Timer.Wait(1000);
+            GPIO.Set_Pin (8, GPIO.LOW);
+         elsif GPIO.Read_Pin (1) then 
+            GPIO.Set_Pin (9, GPIO.HIGH);
+            Timer.Init;
+            Timer.Wait(1000);
+            GPIO.Set_Pin (9, GPIO.LOW);
+         elsif GPIO.Read_Pin (2) then 
+            GPIO.Set_Pin (10, GPIO.HIGH);
+            Timer.Init;
+            Timer.Wait(1000);
+            GPIO.Set_Pin (10, GPIO.LOW);
+         elsif GPIO.Read_Pin (3) then
+            state := False;
+         end if;
+      end loop;
       Show_Choice_Prompt;
    end Show_Leds;
 
@@ -169,7 +186,7 @@ package body Hooks is
                   when Help =>
                      Show_Menu;
                   when Button =>
-                     Show_Button (1);
+                     Show_Button (3);
                   when Number =>
                      New_Line;
                      Show_Random_number;

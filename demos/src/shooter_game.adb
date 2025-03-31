@@ -14,6 +14,10 @@ package body Shooter_Game is
    Ship_Pos         : Integer := Screen_Width / 2; -- Position du vaisseau
    Running          : Boolean := True;             -- Variable pour contrôler la boucle du jeu
    Score            : Integer := 0;                -- Score du joueur
+   Cyan             : constant String := ASCII.ESC & "[38;2;0;255;255m";
+   Green            : constant String := ASCII.ESC & "[32m";
+   Red              : constant String := ASCII.ESC & "[31m";
+   Reset            : constant String := ASCII.ESC & "[0m";
 
    type Projectile is record
       X : Integer := 0;
@@ -66,7 +70,7 @@ package body Shooter_Game is
                -- Afficher un projectile si présent
                for P of Projectiles loop
                   if P.Active and then P.X = Col and then P.Y = Row then
-                     Put("|");
+                     Put(Green & "|" & Reset);
                      Drawn := True;
                      exit;
                   end if;
@@ -75,7 +79,7 @@ package body Shooter_Game is
                -- Afficher un ennemi si présent
                for E of Enemies loop
                   if E.Active and then E.X = Col and then E.Y = Row then
-                     Put("X");
+                     Put(Red & "X" & Reset);
                      Drawn := True;
                      exit;
                   end if;
@@ -84,7 +88,7 @@ package body Shooter_Game is
                -- Afficher le vaisseau
                if not Drawn then
                   if Row = 1 and then Col = Ship_Pos then
-                     Put("^");
+                     Put(Cyan & "^" & Reset);
                   else
                      Put(" ");
                   end if;
