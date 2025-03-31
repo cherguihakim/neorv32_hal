@@ -7,4 +7,5 @@ package Twi is
    function Sense_SCL return Bit;
    function Sense_SDA return Bit;
    function Busy return Bit;
+   function Get (Data : out Byte) return Bit;
 end Twi;
