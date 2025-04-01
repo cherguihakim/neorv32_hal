@@ -16,7 +16,7 @@ with System;
 
 package body Hooks is
 
-   type Cmd_T is (Echo, Infos, Reload, Help, Leds, Button, Number, Wait, Game, Traffic, Your, Unknown);
+   type Cmd_T is (Echo, Infos, Reload, Help, Leds, Button, Number, Wait, Game, Traffic, Your, Counter, Unknown);
    Cmd : Cmd_T := Unknown;
 
    Pink_Bold : constant String := ASCII.ESC & "[1;38;2;255;0;255m";
@@ -58,6 +58,7 @@ package body Hooks is
       Put_Line (" r: Reload the program.");
       Put_Line (" t: traffic light");
       Put_Line (" y: your user code");
+      Put_Line (" c: counter  ");
       Put_Line ("======================================");
       Show_Choice_Prompt;
    end Show_Menu;
@@ -236,6 +237,49 @@ package body Hooks is
       Show_Choice_Prompt;
    end Show_Traffic;
 
+   procedure Show_Counter is
+      state : Boolean := True;
+   begin
+      GPIO.Set_Pin (8, GPIO.LOW);
+      GPIO.Set_Pin (9, GPIO.LOW);
+      GPIO.Set_Pin (10, GPIO.HIGH);
+      Timer.Init;
+      Timer.Wait(1000);
+      GPIO.Set_Pin (8, GPIO.LOW);
+      GPIO.Set_Pin (9, GPIO.HIGH);
+      GPIO.Set_Pin (10, GPIO.LOW);
+      Timer.Init;
+      Timer.Wait(1000);
+      GPIO.Set_Pin (8, GPIO.LOW);
+      GPIO.Set_Pin (9, GPIO.HIGH);
+      GPIO.Set_Pin (10, GPIO.HIGH);
+      Timer.Init;
+      Timer.Wait(1000);
+      GPIO.Set_Pin (8, GPIO.HIGH);
+      GPIO.Set_Pin (9, GPIO.LOW);
+      GPIO.Set_Pin (10, GPIO.LOW);
+      Timer.Init;
+      Timer.Wait(1000);
+      GPIO.Set_Pin (8, GPIO.HIGH);
+      GPIO.Set_Pin (9, GPIO.LOW);
+      GPIO.Set_Pin (10, GPIO.HIGH);
+      Timer.Init;
+      Timer.Wait(1000);
+      GPIO.Set_Pin (8, GPIO.HIGH);
+      GPIO.Set_Pin (9, GPIO.HIGH);
+      GPIO.Set_Pin (10, GPIO.LOW);
+      Timer.Init;
+      Timer.Wait(1000);
+      GPIO.Set_Pin (8, GPIO.HIGH);
+      GPIO.Set_Pin (9, GPIO.HIGH);
+      GPIO.Set_Pin (10, GPIO.HIGH);
+      Timer.Init;
+      Timer.Wait(1000);
+      GPIO.Set_Pin (8, GPIO.LOW);
+      GPIO.Set_Pin (9, GPIO.LOW);
+      GPIO.Set_Pin (10, GPIO.LOW);
+   end Show_Counter;
+
    procedure Parse_Cmd (Hart : Harts_T; Trap_Code : Trap_Code_T) is
       pragma Unreferenced (Hart);
       pragma Unreferenced (Trap_Code);
@@ -292,6 +336,9 @@ package body Hooks is
                   when Your =>
                      New_Line;
                      Show_YourCode;
+                  when Counter =>
+                     New_Line;
+                     Show_Counter;
                   when others =>
                      Show_Unknown_Command;
                end case;
