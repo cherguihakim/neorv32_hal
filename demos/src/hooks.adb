@@ -16,7 +16,7 @@ with System;
 
 package body Hooks is
 
-   type Cmd_T is (Echo, Infos, Reload, Help, Leds, Button, Number, Wait, Game, Unknown);
+   type Cmd_T is (Echo, Infos, Reload, Help, Leds, Button, Number, Wait, Game, Traffic, Unknown);
    Cmd : Cmd_T := Unknown;
 
    Pink_Bold : constant String := ASCII.ESC & "[1;38;2;255;0;255m";
@@ -50,12 +50,13 @@ package body Hooks is
       Put_Line (" e: Echo your input");
       Put_Line (" i: System Infos.");
       Put_Line (" h: Help on commands.");
-      Put_Line (" l: Turn ON LEDs and OFF after 5 seconds.");
+      Put_Line (" l: Turn ON LEDs and OFF in a pattern, then click button to light LED.");
       Put_Line (" b: Wait for button press.");
       Put_Line (" n: Random Number.");
       Put_Line (" w: Wait for 5 seconds.");
       Put_Line (" g: Play the retro-shooter game.");
       Put_Line (" r: Reload the program.");
+      Put_Line (" t: traffic light");
       Put_Line ("======================================");
       Show_Choice_Prompt;
    end Show_Menu;
@@ -120,6 +121,18 @@ package body Hooks is
    procedure Show_Leds is 
       state : Boolean := True;
    begin
+   GPIO.Set_Pin (8, GPIO.HIGH);
+   Timer.Init;
+   Timer.Wait(1000);
+   GPIO.Set_Pin (8, GPIO.LOW);
+   GPIO.Set_Pin (9, GPIO.HIGH);
+   Timer.Init;
+   Timer.Wait(1000);
+   GPIO.Set_Pin (9, GPIO.LOW);
+   GPIO.Set_Pin (10, GPIO.HIGH);
+   Timer.Init;
+   Timer.Wait(1000);
+   GPIO.Set_Pin (10, GPIO.LOW);
    while (state) loop
          if GPIO.Read_Pin (0) then 
             GPIO.Set_Pin (8, GPIO.HIGH);
@@ -148,6 +161,11 @@ package body Hooks is
       Shooter_Game.Game;
       Show_Choice_Prompt;
    end Show_Game;
+
+   procedure Show_Traffic is
+   begin
+      
+   end Show_Traffic;
 
    procedure Parse_Cmd (Hart : Harts_T; Trap_Code : Trap_Code_T) is
       pragma Unreferenced (Hart);
@@ -199,6 +217,9 @@ package body Hooks is
                   when Game =>
                      New_Line;
                      Show_Game;
+                  when Traffic =>
+                     New_Line;
+                     Show_Traffic;
                   when others =>
                      Show_Unknown_Command;
                end case;
