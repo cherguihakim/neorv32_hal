@@ -16,7 +16,7 @@ with System;
 
 package body Hooks is
 
-   type Cmd_T is (Echo, Infos, Reload, Help, Leds, Button, Number, Wait, Game, Traffic, Unknown);
+   type Cmd_T is (Echo, Infos, Reload, Help, Leds, Button, Number, Wait, Game, Traffic, Your, Unknown);
    Cmd : Cmd_T := Unknown;
 
    Pink_Bold : constant String := ASCII.ESC & "[1;38;2;255;0;255m";
@@ -57,6 +57,7 @@ package body Hooks is
       Put_Line (" g: Play the retro-shooter game.");
       Put_Line (" r: Reload the program.");
       Put_Line (" t: traffic light");
+      Put_Line (" y: your user code");
       Put_Line ("======================================");
       Show_Choice_Prompt;
    end Show_Menu;
@@ -117,6 +118,15 @@ package body Hooks is
       Put_Line ("Timer expired");
       Show_Choice_Prompt;
    end Show_Timer;
+
+   procedure Show_YourCode is
+   begin
+      --start user code
+
+      --end user code
+      New_Line;
+      Show_Choice_Prompt;
+   end Show_Your;
 
    procedure Show_Leds is 
       state : Boolean := True;
@@ -279,6 +289,9 @@ package body Hooks is
                   when Traffic =>
                      New_Line;
                      Show_Traffic;
+                  when Your =>
+                     New_Line;
+                     Show_YourCode;
                   when others =>
                      Show_Unknown_Command;
                end case;
