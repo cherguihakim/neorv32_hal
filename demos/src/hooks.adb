@@ -163,8 +163,67 @@ package body Hooks is
    end Show_Game;
 
    procedure Show_Traffic is
+      state : Boolean := True;
    begin
-      
+      -- red pedestrian light       0
+      -- green pedestrian light     1
+      -- Red Main Light             2
+      -- yellow main light          3
+      -- green main light           4
+      GPIO.Set_Pin (0, GPIO.LOW);
+      GPIO.Set_Pin (1, GPIO.LOW);
+      GPIO.Set_Pin (2, GPIO.LOW);
+      GPIO.Set_Pin (3, GPIO.LOW);
+      GPIO.Set_Pin (4, GPIO.LOW);
+      while (state) loop
+         GPIO.Set_Pin (0, GPIO.HIGH); --rp
+         GPIO.Set_Pin (1, GPIO.LOW); --gp
+         GPIO.Set_Pin (2, GPIO.LOW); --r
+         GPIO.Set_Pin (3, GPIO.LOW); --y
+         GPIO.Set_Pin (4, GPIO.HIGH); --g
+         if (GPIO.Read_Pin (0) ) then
+            GPIO.Set_Pin (0, GPIO.HIGH); --rp
+            GPIO.Set_Pin (1, GPIO.LOW); --gp
+            GPIO.Set_Pin (2, GPIO.LOW); --r
+            GPIO.Set_Pin (3, GPIO.HIGH); --y
+            GPIO.Set_Pin (4, GPIO.LOW); --g
+            Timer.Init;
+            Timer.Wait(3000);
+            GPIO.Set_Pin (0, GPIO.HIGH); --rp
+            GPIO.Set_Pin (1, GPIO.LOW); --gp
+            GPIO.Set_Pin (2, GPIO.HIGH); --r
+            GPIO.Set_Pin (3, GPIO.LOW); --y
+            GPIO.Set_Pin (4, GPIO.LOW); --g
+            Timer.Init;
+            Timer.Wait(1000);
+            GPIO.Set_Pin (0, GPIO.LOW); --rp
+            GPIO.Set_Pin (1, GPIO.HIGH); --gp
+            GPIO.Set_Pin (2, GPIO.HIGH); --r
+            GPIO.Set_Pin (3, GPIO.LOW); --y
+            GPIO.Set_Pin (4, GPIO.LOW); --g
+            Timer.Init;
+            Timer.Wait(10000);
+            GPIO.Set_Pin (0, GPIO.HIGH); --rp
+            GPIO.Set_Pin (1, GPIO.LOW); --gp
+            GPIO.Set_Pin (2, GPIO.HIGH); --r
+            GPIO.Set_Pin (3, GPIO.LOW); --y
+            GPIO.Set_Pin (4, GPIO.LOW); --g
+            Timer.Init;
+            Timer.Wait(1000);
+            GPIO.Set_Pin (0, GPIO.HIGH); --rp
+            GPIO.Set_Pin (1, GPIO.LOW); --gp
+            GPIO.Set_Pin (2, GPIO.HIGH); --r
+            GPIO.Set_Pin (3, GPIO.HIGH); --y
+            GPIO.Set_Pin (4, GPIO.LOW); --g
+            Timer.Init;
+            Timer.Wait(2000);
+         end if;
+
+         if GPIO.Read_Pin (3) then
+            state := False;
+         end if;
+      end loop;
+      Show_Choice_Prompt;
    end Show_Traffic;
 
    procedure Parse_Cmd (Hart : Harts_T; Trap_Code : Trap_Code_T) is
