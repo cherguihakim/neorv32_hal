@@ -132,6 +132,10 @@ package body Hooks is
    procedure Show_Leds is 
       state : Boolean := True;
    begin
+   GPIO.Set_Pin (8, GPIO.LOW);
+   GPIO.Set_Pin (9, GPIO.LOW);
+   GPIO.Set_Pin (10, GPIO.LOW);
+
    GPIO.Set_Pin (8, GPIO.HIGH);
    Timer.Init;
    Timer.Wait(1000);
@@ -164,6 +168,9 @@ package body Hooks is
             state := False;
          end if;
       end loop;
+      GPIO.Set_Pin (8, GPIO.LOW);
+      GPIO.Set_Pin (9, GPIO.LOW);
+      GPIO.Set_Pin (10, GPIO.LOW);
       Show_Choice_Prompt;
    end Show_Leds;
 
@@ -234,6 +241,11 @@ package body Hooks is
             state := False;
          end if;
       end loop;
+      GPIO.Set_Pin (0, GPIO.LOW); --rp
+      GPIO.Set_Pin (1, GPIO.LOW); --gp
+      GPIO.Set_Pin (2, GPIO.LOW); --r
+      GPIO.Set_Pin (3, GPIO.LOW); --y
+      GPIO.Set_Pin (4, GPIO.LOW); --g
       Show_Choice_Prompt;
    end Show_Traffic;
 
