@@ -65,7 +65,7 @@ package body Twi is
       while TWI_Periph.CTRL.TWI_CTRL_TX_FULL /= 0 loop -- wait for free TX entry
          null;
       end loop;
-      Send_Nonblocking(Data, MACK); -- send adress + R/W + host/ACK
+      -- Send_Nonblocking(Data, MACK); -- send adress + R/W + host/ACK
       loop
          Device_Ack := Get(Rx_Data);
          exit when Device_Ack /= -1; -- wait until data is available
@@ -73,11 +73,6 @@ package body Twi is
       Data := Rx_Data;
       return Device_Ack;
    end Transfer;
-
-   procedure Send_Nonblocking (Data : Byte; MACK : Bit) is
-   begin
-   end;
-
    --   --  Get received data and ACK status
    --  function Get (Data : out Unsigned_8) return Integer is
    --  begin

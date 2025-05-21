@@ -16,7 +16,7 @@ with System;
 
 package body Hooks is
 
-   type Cmd_T is (Echo, Infos, Reload, Help, Leds, Button, Number, Wait, Game, Traffic, Your, Counter, Unknown);
+   type Cmd_T is (Echo, Infos, Reload, Help, Leds, Button, Number, Wait, Game, Traffic, Counter, Unknown);
    Cmd : Cmd_T := Unknown;
 
    Pink_Bold : constant String := ASCII.ESC & "[1;38;2;255;0;255m";
@@ -120,15 +120,6 @@ package body Hooks is
       Show_Choice_Prompt;
    end Show_Timer;
 
-   procedure Show_YourCode is
-   begin
-      --start user code
-
-      --end user code
-      New_Line;
-      Show_Choice_Prompt;
-   end Show_Your;
-
    procedure Show_Leds is 
       state : Boolean := True;
    begin
@@ -138,40 +129,40 @@ package body Hooks is
 
    GPIO.Set_Pin (8, GPIO.HIGH);
    Timer.Init;
-   Timer.Wait(1000);
+   Timer.Wait(200);
    GPIO.Set_Pin (8, GPIO.LOW);
    GPIO.Set_Pin (9, GPIO.HIGH);
    Timer.Init;
-   Timer.Wait(1000);
+   Timer.Wait(200);
    GPIO.Set_Pin (9, GPIO.LOW);
    GPIO.Set_Pin (10, GPIO.HIGH);
    Timer.Init;
-   Timer.Wait(1000);
+   Timer.Wait(200);
    GPIO.Set_Pin (10, GPIO.LOW);
    while (state) loop
          if GPIO.Read_Pin (0) then 
             GPIO.Set_Pin (8, GPIO.HIGH);
             Timer.Init;
-            Timer.Wait(1000);
+            Timer.Wait(100);
             GPIO.Set_Pin (8, GPIO.LOW);
          elsif GPIO.Read_Pin (1) then 
             GPIO.Set_Pin (9, GPIO.HIGH);
             Timer.Init;
-            Timer.Wait(1000);
+            Timer.Wait(100);
             GPIO.Set_Pin (9, GPIO.LOW);
          elsif GPIO.Read_Pin (2) then 
             GPIO.Set_Pin (10, GPIO.HIGH);
             Timer.Init;
-            Timer.Wait(1000);
+            Timer.Wait(100);
             GPIO.Set_Pin (10, GPIO.LOW);
          elsif GPIO.Read_Pin (3) then
             state := False;
          end if;
-      end loop;
-      GPIO.Set_Pin (8, GPIO.LOW);
-      GPIO.Set_Pin (9, GPIO.LOW);
-      GPIO.Set_Pin (10, GPIO.LOW);
-      Show_Choice_Prompt;
+   end loop;
+   GPIO.Set_Pin (8, GPIO.LOW);
+   GPIO.Set_Pin (9, GPIO.LOW);
+   GPIO.Set_Pin (10, GPIO.LOW);
+   Show_Choice_Prompt;
    end Show_Leds;
 
    procedure Show_Game is  
@@ -213,21 +204,21 @@ package body Hooks is
             GPIO.Set_Pin (3, GPIO.LOW); --y
             GPIO.Set_Pin (4, GPIO.LOW); --g
             Timer.Init;
-            Timer.Wait(1000);
+            Timer.Wait(500);
             GPIO.Set_Pin (0, GPIO.LOW); --rp
             GPIO.Set_Pin (1, GPIO.HIGH); --gp
             GPIO.Set_Pin (2, GPIO.HIGH); --r
             GPIO.Set_Pin (3, GPIO.LOW); --y
             GPIO.Set_Pin (4, GPIO.LOW); --g
             Timer.Init;
-            Timer.Wait(10000);
+            Timer.Wait(5000);
             GPIO.Set_Pin (0, GPIO.HIGH); --rp
             GPIO.Set_Pin (1, GPIO.LOW); --gp
             GPIO.Set_Pin (2, GPIO.HIGH); --r
             GPIO.Set_Pin (3, GPIO.LOW); --y
             GPIO.Set_Pin (4, GPIO.LOW); --g
             Timer.Init;
-            Timer.Wait(1000);
+            Timer.Wait(500);
             GPIO.Set_Pin (0, GPIO.HIGH); --rp
             GPIO.Set_Pin (1, GPIO.LOW); --gp
             GPIO.Set_Pin (2, GPIO.HIGH); --r
@@ -241,6 +232,14 @@ package body Hooks is
             state := False;
          end if;
       end loop;
+      GPIO.Set_Pin (0, GPIO.HIGH); --rp
+      GPIO.Set_Pin (1, GPIO.LOW); --gp
+      GPIO.Set_Pin (2, GPIO.LOW); --r
+      GPIO.Set_Pin (3, GPIO.LOW); --y
+      GPIO.Set_Pin (4, GPIO.HIGH); --g
+      Timer.Init;
+      Timer.Wait(500);
+
       GPIO.Set_Pin (0, GPIO.LOW); --rp
       GPIO.Set_Pin (1, GPIO.LOW); --gp
       GPIO.Set_Pin (2, GPIO.LOW); --r
@@ -256,40 +255,41 @@ package body Hooks is
       GPIO.Set_Pin (9, GPIO.LOW);
       GPIO.Set_Pin (10, GPIO.HIGH);
       Timer.Init;
-      Timer.Wait(1000);
+      Timer.Wait(500);
       GPIO.Set_Pin (8, GPIO.LOW);
       GPIO.Set_Pin (9, GPIO.HIGH);
       GPIO.Set_Pin (10, GPIO.LOW);
       Timer.Init;
-      Timer.Wait(1000);
+      Timer.Wait(500);
       GPIO.Set_Pin (8, GPIO.LOW);
       GPIO.Set_Pin (9, GPIO.HIGH);
       GPIO.Set_Pin (10, GPIO.HIGH);
       Timer.Init;
-      Timer.Wait(1000);
+      Timer.Wait(500);
       GPIO.Set_Pin (8, GPIO.HIGH);
       GPIO.Set_Pin (9, GPIO.LOW);
       GPIO.Set_Pin (10, GPIO.LOW);
       Timer.Init;
-      Timer.Wait(1000);
+      Timer.Wait(500);
       GPIO.Set_Pin (8, GPIO.HIGH);
       GPIO.Set_Pin (9, GPIO.LOW);
       GPIO.Set_Pin (10, GPIO.HIGH);
       Timer.Init;
-      Timer.Wait(1000);
+      Timer.Wait(500);
       GPIO.Set_Pin (8, GPIO.HIGH);
       GPIO.Set_Pin (9, GPIO.HIGH);
       GPIO.Set_Pin (10, GPIO.LOW);
       Timer.Init;
-      Timer.Wait(1000);
+      Timer.Wait(500);
       GPIO.Set_Pin (8, GPIO.HIGH);
       GPIO.Set_Pin (9, GPIO.HIGH);
       GPIO.Set_Pin (10, GPIO.HIGH);
       Timer.Init;
-      Timer.Wait(1000);
+      Timer.Wait(500);
       GPIO.Set_Pin (8, GPIO.LOW);
       GPIO.Set_Pin (9, GPIO.LOW);
       GPIO.Set_Pin (10, GPIO.LOW);
+      Show_Choice_Prompt;
    end Show_Counter;
 
    procedure Parse_Cmd (Hart : Harts_T; Trap_Code : Trap_Code_T) is
@@ -345,9 +345,6 @@ package body Hooks is
                   when Traffic =>
                      New_Line;
                      Show_Traffic;
-                  when Your =>
-                     New_Line;
-                     Show_YourCode;
                   when Counter =>
                      New_Line;
                      Show_Counter;
