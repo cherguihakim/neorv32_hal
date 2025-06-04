@@ -21,15 +21,15 @@ package body SMP is
          return -1;
       end if; 
 
-      CLINT_Periph.MTIMECMP0_HI := (Stack_End); -- top of core's stack
-      CLINT_Periph.MTIMECMP0_LOW := UInt32(To_Integer (Entry_Point'Address)); -- entry point
+      CLINT_Periph.MTIMECMP1_LOW := (Stack_End); -- top of core's stack
+      CLINT_Periph.MTIMECMP1_HI := UInt32(To_Integer (Entry_Point'Address)); -- entry point
 
       -- start core by trigerring its software interrupt
-      CLINT_Periph.MSWI0 := 1;
+      CLINT_Periph.MSWI1.HART1 := 1;
 
       -- wait for core to start
       while (Timeout /= 0) loop 
-         if CLINT_Periph.MSWI0 = 0 then 
+         if CLINT_Periph.MSWI1.HART1 = 0 then 
             return 0;
          end if;
          Timeout := Timeout - 1;
