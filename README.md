@@ -81,7 +81,7 @@ The goal is to provide a modular, low-level embedded system that supports real-t
 - **Olivier Henley** — Project supervisor and mentor (AdaCore), provided guidance, technical reviews, and support throughout the development
 - **Hakim Chergui** — Embedded firmware, driver development, system integration, retro game implementation  
 - **Maro Abdine**
-- **Adam Taktek**
+- **Adam Taktek** - PCB schematic designer, Main PCB Layout designer
 - **Christopher Krayem**
 - **Onel Valery Mezil**
 - **Simon Marchildon** 
